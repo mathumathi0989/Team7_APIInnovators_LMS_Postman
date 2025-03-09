@@ -123,7 +123,480 @@
 		},
 		{
 			"name": "Program",
-			"item": [],
+			"item": [
+				{
+					"name": "Add New Program with all fields",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "688453f7-10d0-43fc-b5af-2286c668cac8",
+								"exec": [
+									"\r",
+									"let scenario = pm.variables.get(\"scenario\");\r",
+									"\r",
+									"if ( scenario == 'Program with valid fields'){\r",
+									"\r",
+									"    //We need to generate unique program name\r",
+									"    let nameSuffix = pm.variables.replaceIn('{{$randomWord}}');\r",
+									"    pm.variables.set(\"programName\", \"postman-\"+nameSuffix);\r",
+									"}\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "fed37dc0-a205-4cca-8a8c-e3a08f849304",
+								"exec": [
+									"\r",
+									"console.log (\"Validating Response, Iternation\", (pm.info.iteration)); \r",
+									"\r",
+									"if ( pm.response.code == 201 ){\r",
+									"\r",
+									"    //Now validating schema\r",
+									"    const schema = {\r",
+									"\r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                    \"programId\": { \"type\": \"integer\"},\r",
+									"                    \"programName\": { \"type\": \"string\"},\r",
+									"                    \"programDescription\": { \"type\": \"string\"},\r",
+									"                    \"programStatus\": { \"type\": \"string\"},\r",
+									"                    \"creationTime\": { \"type\": \"string\"},\r",
+									"                    \"lastModTime\": { \"type\": \"string\"}\r",
+									"                },\r",
+									"                \"required\": [\"programId\", \"programName\", \"programDescription\", \"programStatus\", \"creationTime\", \"lastModTime\"]\r",
+									"        };\r",
+									"\r",
+									"    const scenario = pm.variables.get(\"scenario\");\r",
+									"    pm.test(`[${scenario}] - Validating Schema`, function () {\r",
+									"        \r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"    \r",
+									"    //program is created, save it for following requests - chaining\r",
+									"    let respBody = pm.response.json();\r",
+									"    pm.environment.set(\"programId\", respBody.programId);\r",
+									"    pm.environment.set(\"programName\", respBody.programName);\r",
+									"\r",
+									"    console.log(\"Program ID: \"+respBody.programId);\r",
+									"    console.log(\"Program Name: \"+respBody.programName);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "10dcf95b-01e2-4346-9073-8e27577eff51",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n  \"programName\": \"{{programName}}\",\r\n  \"programDescription\": \"{{programDescription}}\",\r\n  \"programStatus\": \"{{programStatus}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base-url}}/{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Program with Mandatory fields",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "688453f7-10d0-43fc-b5af-2286c668cac8",
+								"exec": [
+									"\r",
+									"let scenario = pm.variables.get(\"scenario\");\r",
+									"\r",
+									"if ( scenario == 'Program with mandatory fields - successful'){\r",
+									"\r",
+									"    //We need to generate unique program name\r",
+									"    let nameSuffix = pm.variables.replaceIn('{{$randomWord}}');\r",
+									"    pm.variables.set(\"programName\", \"postman-\"+nameSuffix);\r",
+									"}\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "fed37dc0-a205-4cca-8a8c-e3a08f849304",
+								"exec": [
+									"\r",
+									"if ( pm.response.code == 201 ){\r",
+									"\r",
+									"    //Now validating schema\r",
+									"    const schema = {\r",
+									"\r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                    \"programId\": { \"type\": \"integer\"},\r",
+									"                    \"programName\": { \"type\": \"string\"},\r",
+									"                    \"programStatus\": { \"type\": \"string\"},\r",
+									"                    \"creationTime\": { \"type\": \"string\"},\r",
+									"                    \"lastModTime\": { \"type\": \"string\"}\r",
+									"                },\r",
+									"                \"required\": [\"programId\", \"programName\", \"programStatus\", \"creationTime\", \"lastModTime\"]\r",
+									"        };\r",
+									"\r",
+									"    const scenario = pm.variables.get(\"scenario\");\r",
+									"    pm.test(`[${scenario}] - Validating Schema`, function () {\r",
+									"        \r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"    //program is created, save it for following requests - chaining\r",
+									"    let respBody = pm.response.json();\r",
+									"    pm.environment.set(\"programId2\", respBody.programId);\r",
+									"    pm.environment.set(\"programName2\", respBody.programName);\r",
+									"\r",
+									"    console.log(\"Program ID 2: \"+respBody.programId);\r",
+									"    console.log(\"Program Name 2: \"+respBody.programName);\r",
+									" \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "36f22f1d-cd0e-421d-b780-2351c9d8d789",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n  \"programName\": \"{{programName}}\",\r\n  \"programStatus\": \"{{programStatus}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base-url}}/{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all programs",
+					"id": "5d95f0df-4aba-41fe-b29c-980c87d917c4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base-url}}/{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Programs with Users",
+					"id": "9355b15f-68fd-4f0c-b2f6-a5a48a843f6a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base-url}}/{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Program by Program Id",
+					"id": "6bb0c623-c69e-42e0-9908-566b8ee01774",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base-url}}/{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Program by Program Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "688453f7-10d0-43fc-b5af-2286c668cac8",
+								"exec": [
+									"\r",
+									"let scenario = pm.variables.get(\"scenario\");\r",
+									"\r",
+									"if ( scenario == 'Program with valid fields'){\r",
+									"\r",
+									"    //We need to generate unique program name\r",
+									"    let nameSuffix = pm.variables.replaceIn('{{$randomWord}}');\r",
+									"    pm.variables.set(\"programName\", \"postman-\"+nameSuffix);\r",
+									"}\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "fed37dc0-a205-4cca-8a8c-e3a08f849304",
+								"exec": [
+									"\r",
+									"\r",
+									"if ( pm.response.code == 200 ){\r",
+									"\r",
+									"    //Now validating schema\r",
+									"    const schema = {\r",
+									"\r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                    \"programId\": { \"type\": \"integer\"},\r",
+									"                    \"programName\": { \"type\": \"string\"},\r",
+									"                    \"programDescription\": { \"type\": \"string\"},\r",
+									"                    \"programStatus\": { \"type\": \"string\"},\r",
+									"                    \"creationTime\": { \"type\": \"string\"},\r",
+									"                    \"lastModTime\": { \"type\": \"string\"}\r",
+									"                },\r",
+									"                \"required\": [\"programId\", \"programName\", \"programDescription\", \"programStatus\", \"creationTime\", \"lastModTime\"]\r",
+									"        };\r",
+									"\r",
+									"    const scenario = pm.variables.get(\"scenario\");\r",
+									"    pm.test(`[${scenario}] - Validating Schema`, function () {\r",
+									"        \r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"    \r",
+									"    //program is created, save it for following requests - chaining\r",
+									"    let respBody = pm.response.json();\r",
+									"    //pm.environment.set(\"programId\", respBody.programId);\r",
+									"    pm.environment.set(\"programName\", respBody.programName);\r",
+									"\r",
+									"    //console.log(\"Program ID: \"+respBody.programId);\r",
+									"    console.log(\"Program Name: \"+respBody.programName);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "0a729a35-0fd3-4236-b1d8-903387d8000e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n  \"programName\": \"{{programName}}\",\r\n  \"programDescription\": \"{{programDescription}}\",\r\n  \"programStatus\": \"{{programStatus}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base-url}}/{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Program by Program Name",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "688453f7-10d0-43fc-b5af-2286c668cac8",
+								"exec": [
+									"\r",
+									"let scenario = pm.variables.get(\"scenario\");\r",
+									"\r",
+									"if ( scenario == 'Program with valid fields'){\r",
+									"\r",
+									"    //We need to generate unique program name\r",
+									"    let nameSuffix = pm.variables.replaceIn('{{$randomWord}}');\r",
+									"    pm.variables.set(\"programName\", \"postman-\"+nameSuffix);\r",
+									"}\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "fed37dc0-a205-4cca-8a8c-e3a08f849304",
+								"exec": [
+									"\r",
+									"console.log (\"Validating Response, Iternation\", (pm.info.iteration)); \r",
+									"\r",
+									"if ( pm.response.code == 200 ){\r",
+									"\r",
+									"    //Now validating schema\r",
+									"    const schema = {\r",
+									"\r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                    \"programId\": { \"type\": \"integer\"},\r",
+									"                    \"programName\": { \"type\": \"string\"},\r",
+									"                    \"programDescription\": { \"type\": \"string\"},\r",
+									"                    \"programStatus\": { \"type\": \"string\"},\r",
+									"                    \"creationTime\": { \"type\": \"string\"},\r",
+									"                    \"lastModTime\": { \"type\": \"string\"}\r",
+									"                },\r",
+									"                \"required\": [\"programId\", \"programName\", \"programDescription\", \"programStatus\", \"creationTime\", \"lastModTime\"]\r",
+									"        };\r",
+									"\r",
+									"    const scenario = pm.variables.get(\"scenario\");\r",
+									"    pm.test(`[${scenario}] - Validating Schema`, function () {\r",
+									"        \r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"    \r",
+									"    //program is created, save it for following requests - chaining\r",
+									"    let respBody = pm.response.json();\r",
+									"    //pm.environment.set(\"programId\", respBody.programId);\r",
+									"    pm.environment.set(\"programName\", respBody.programName);\r",
+									"\r",
+									"    //console.log(\"Program ID: \"+respBody.programId);\r",
+									"    console.log(\"Program Name: \"+respBody.programName);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "fcc1354d-d5c2-4d17-adb6-f54503639ec2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n  \"programName\": \"{{programName}}\",\r\n  \"programDescription\": \"{{programDescription}}\",\r\n  \"programStatus\": \"{{programStatus}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base-url}}/{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Program By Program ID",
+					"id": "53394a81-5bcb-417f-ba93-4243fbdee624",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base-url}}/{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Program By Program Name",
+					"id": "8347e840-cc87-43b9-a1fd-ef0c075187ce",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base-url}}/{{endpoint}}"
+					},
+					"response": []
+				}
+			],
 			"id": "05931068-4e09-4228-a3ba-f5970f0b24d7"
 		},
 		{
@@ -328,23 +801,37 @@
 					"    catch (e) {\r",
 					"       console.log(\"Failed to parse JSON response:\", e);\r",
 					"        // If the response is not valid JSON, only validate status code and status text\r",
-					"        pm.test(\"Validating Status Code - \" , () => {\r",
+					"        pm.test(`[${scenarioName}] - Validating Status Code`, ()=> {\r",
 					"            pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
 					"        });\r",
-					"        pm.test(\"Response status text check - \" , function () {\r",
-					"            pm.expect(pm.response.status).to.eql(pm.variables.get('statusText'));\r",
+					"        // Test to validate the status line (status text) of the response\r",
+					"        pm.test(`[${scenarioName}] - Validating Status Line`, function () {\r",
+					"            pm.expect(pm.response.status).to.eql(pm.variables.get('statusText'));\r",
 					"        });\r",
 					"    }\r",
 					"  } \r",
 					"  else {\r",
 					" console.log(\"Empty response received.\");\r",
 					"    // If the response is empty, log the issue and still validate the status code\r",
-					"    pm.test(\"Validating Status Code - \"  , () => {\r",
+					"\r",
+					"    pm.test(`[${scenarioName}] - Validating Status Code`, ()=> {\r",
 					"        pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
 					"    });\r",
 					"  }"
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"id": "5d41bcba-6ebf-4053-9b4f-c7e671b5a4ba",
+			"key": "base-url",
+			"value": "https://lms-hackthon-feb25-803334c87fbe.herokuapp.com/lms"
+		},
+		{
+			"id": "c7734a69-717e-43d4-a99d-74fb750b3ddb",
+			"key": "token",
+			"value": ""
 		}
 	]
 }

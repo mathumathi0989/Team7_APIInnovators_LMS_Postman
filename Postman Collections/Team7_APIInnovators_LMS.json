@@ -1,0 +1,350 @@
+{
+	"info": {
+		"_postman_id": "015bbcc1-4d23-4b56-ad4b-20b7ee9f52a2",
+		"name": "Team7_APIInnovators_LMS_Postman",
+		"schema": "https://schema.postman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84668fce-4bde-4ff5-ac97-5372f72bdd1f",
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"// Set Authorization token to environment variable\r",
+									"if(pm.variables.get(\"statusCode\")===200){\r",
+									"pm.environment.set(\"Authtoken\", jsonData.token);\r",
+									"}\r",
+									"\r",
+									"// Valid Schema\r",
+									"var schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"token\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"type\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"userId\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"email\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"roles\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": [\r",
+									"        {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      ]\r",
+									"    },\r",
+									"    \"status\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"passwordExpired\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"token\",\r",
+									"    \"type\",\r",
+									"    \"userId\",\r",
+									"    \"email\",\r",
+									"    \"roles\",\r",
+									"    \"status\",\r",
+									"    \"passwordExpired\"\r",
+									"  ]\r",
+									"}\r",
+									"// Invalid Schema\r",
+									"var Invalidschema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"message\",\r",
+									"    \"success\"\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"// Schema validation for valid & invalid scenario\r",
+									"pm.test(\"Schema Validation AJV\", () =>{\r",
+									"if(pm.variables.get(\"statusCode\")===200)\r",
+									"pm.response.to.have.jsonSchema(schema);\r",
+									"else if(pm.variables.get(\"statusCode\")===400)\r",
+									"pm.response.to.have.jsonSchema(Invalidschema);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "c088c983-b75c-4426-a9d9-795819623872",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"password\": \"{{password}}\",\r\n\"userLoginEmailId\": \"{{userLoginEmailId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				}
+			],
+			"id": "455a8d4c-7576-456c-928f-cdafe73bc979"
+		},
+		{
+			"name": "Program",
+			"item": [],
+			"id": "05931068-4e09-4228-a3ba-f5970f0b24d7"
+		},
+		{
+			"name": "Batch",
+			"item": [
+				{
+					"name": "AddBatch",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "20b6e3de-d337-4a51-b3d1-02aeb24cf9d0",
+								"exec": [
+									"if(pm.variables.get(\"statusCode\")===201){\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"batchId\", jsonData.batchId);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "165155f5-0183-42dd-bd3c-89cde9c3588f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"batchDescription\": \"{{batchDescription}}\",\r\n\"batchName\": \"{{batchName}}\",\r\n\"batchNoOfClasses\": \"{{batchNoOfClasses}}\",\r\n\"batchStatus\": \"{{batchStatus}}\",\r\n\"programId\": \"{{programId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				}
+			],
+			"id": "ed4b8a34-4aca-4da3-9d27-532ee29de2f3"
+		},
+		{
+			"name": "Class",
+			"item": [],
+			"id": "5927191d-57bf-4491-8423-99aab342fd39"
+		},
+		{
+			"name": "User",
+			"item": [],
+			"id": "6c3524fd-312f-4dc6-bc35-746c3b5c9fef"
+		},
+		{
+			"name": "Delete and Data Cleanup",
+			"item": [],
+			"id": "535fbe46-c988-42dd-aaeb-7099cbbe7540"
+		},
+		{
+			"name": "Logout",
+			"item": [],
+			"id": "779574b2-ac1a-4834-aa53-1569e5260f77"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "55331be9-923c-40b5-b947-de832c92b994",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"//--------------Fetch Data from External JSON Data file-----------------\r",
+					"if (typeof pm.variables.get('requestdata') !== 'object') {\r",
+					"    pm.variables.set('requestdata', pm.iterationData.toObject());\r",
+					"}\r",
+					"const requestdata = pm.variables.get('requestdata');\r",
+					"\r",
+					"if(typeof requestdata !== 'object' || Object.keys(requestdata).length ===0) {\r",
+					"    console.log(\"No external file found\")\r",
+					"    return;\r",
+					"}\r",
+					"\r",
+					"const currentrequest = requestdata.requests.filter(({name}) => name === pm.info.requestName) [0];\r",
+					"if(!currentrequest){\r",
+					"    console.log(`Request ${pm.info.requestName} has no data defined.`);\r",
+					"}\r",
+					"\r",
+					"const variables = currentrequest.data.shift();\r",
+					"Object.entries(variables).forEach(([key, value]) => {\r",
+					"        pm.variables.set(key, value);\r",
+					"    });\r",
+					"\r",
+					"pm.variables.set('requestdata',requestdata);\r",
+					"if(currentrequest.data.length > 0){\r",
+					"    pm.execution.setNextRequest(pm.info.requestName)\r",
+					"}\r",
+					"\r",
+					"//------------------ Authorization Set Up-----------------\r",
+					"pm.request.headers.clear(); // Clear all headers to prevent residual values\r",
+					"pm.cookies.clear(); // Clear session cookies\r",
+					"\r",
+					"var AuthType = pm.variables.get(\"authType\");\r",
+					"console.log(\"Auth Type:\", AuthType);\r",
+					"\r",
+					"switch (AuthType) {\r",
+					"    case \"No Auth\":\r",
+					"        // Ensure no Authorization header is sent\r",
+					"        pm.request.headers.upsert({\r",
+					"            key: 'Authorization',\r",
+					"            value: ''\r",
+					"        });\r",
+					"        console.log(\"🟢 Authorization cleared for 'No Auth' scenario.\");\r",
+					"        \r",
+					"        // Set request authorization type to No Auth\r",
+					"        pm.request.auth = { type: 'noauth' };\r",
+					"        console.log(\"[AUTH] No authentication required.\");\r",
+					"        break;\r",
+					"\r",
+					"    case \"Bearer Token\":\r",
+					"        let token = pm.environment.get(\"Authtoken\"); // Retrieve token from environment\r",
+					"        pm.request.auth = {\r",
+					"            type: \"bearer\",\r",
+					"            bearer: { token: token }\r",
+					"        };\r",
+					"        console.log(\"[AUTH] Using valid Bearer Token.\");\r",
+					"        break;\r",
+					"\r",
+					"    case \"Invalid Bearer Token\":\r",
+					"        // Set an invalid token for testing\r",
+					"        pm.request.auth = {\r",
+					"            type: \"bearer\",\r",
+					"            bearer: { token: \"invalid_token_123\" }\r",
+					"        };\r",
+					"        console.log(\"[AUTH] Using invalid Bearer Token for testing.\");\r",
+					"        break;\r",
+					"\r",
+					"    default:\r",
+					"        console.log(\"⚠️ Unknown AuthType: \" + AuthType);\r",
+					"        break;\r",
+					"}\r",
+					"\r",
+					"//-------------- Set the Request Method Dynamically---------------\r",
+					" if (variables.method) {\r",
+					"    pm.request.method = variables.method;\r",
+					" }"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "24507f60-0a2d-49c9-a7c7-37077e3c118c",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const scenarioName = pm.variables.get(\"scenario\");\r",
+					"\r",
+					"/* Define a function that contains common tests to validate the API response \r",
+					"----------------------------Common Test Functions--------------------------*/\r",
+					"var commonTests = () =>{\r",
+					"    \r",
+					"// Test to validate the status code of the response\r",
+					"pm.test(`[${scenarioName}] - Validating Status Code`, ()=> {\r",
+					"    pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
+					"});\r",
+					"\r",
+					"// Test to validate the status line (status text) of the response\r",
+					"pm.test(`[${scenarioName}] - Validating Status Line`, function () {\r",
+					"    pm.expect(pm.response.status).to.eql(pm.variables.get('statusText'));\r",
+					"});\r",
+					"\r",
+					"// Test to validate the Content-Type header of the response\r",
+					"pm.test(`[${scenarioName}] - Content-Type header is application/json`, ()=>{\r",
+					"    pm.response.to.have.header(\"Content-Type\");\r",
+					"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+					"});\r",
+					"\r",
+					" // Test to check that the response time is below 3000ms\r",
+					"pm.test(`[${scenarioName}] - Response time is less than 3000ms`, function () {\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+					"});\r",
+					"}\r",
+					"\r",
+					"// Store the common tests as a string in the environment for later execution\r",
+					"pm.environment.set(\"commonTests\",commonTests.toString());\r",
+					"\r",
+					"\r",
+					"// Now, let's validate the response using the common tests we defined above\r",
+					"// Check if the response body is not empty\r",
+					"if (pm.response.text() !== '') {\r",
+					"    try {\r",
+					"        // Try to parse the response body as JSON\r",
+					"        const jsonData = pm.response.json();\r",
+					"        // If the response is valid JSON, run the common tests\r",
+					"        eval(pm.environment.get(\"commonTests\"))();\r",
+					"    } \r",
+					"    catch (e) {\r",
+					"       console.log(\"Failed to parse JSON response:\", e);\r",
+					"        // If the response is not valid JSON, only validate status code and status text\r",
+					"        pm.test(\"Validating Status Code - \" , () => {\r",
+					"            pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
+					"        });\r",
+					"        pm.test(\"Response status text check - \" , function () {\r",
+					"            pm.expect(pm.response.status).to.eql(pm.variables.get('statusText'));\r",
+					"        });\r",
+					"    }\r",
+					"  } \r",
+					"  else {\r",
+					" console.log(\"Empty response received.\");\r",
+					"    // If the response is empty, log the issue and still validate the status code\r",
+					"    pm.test(\"Validating Status Code - \"  , () => {\r",
+					"        pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
+					"    });\r",
+					"  }"
+				]
+			}
+		}
+	]
+}

@@ -14,17 +14,17 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "84668fce-4bde-4ff5-ac97-5372f72bdd1f",
+								"id": "6fda034b-aad2-4c2e-b14d-753643f49610",
 								"exec": [
-									"var jsonData = pm.response.json();\r",
 									"\r",
 									"// Set Authorization token to environment variable\r",
 									"if(pm.variables.get(\"statusCode\")===200){\r",
+									"    var jsonData = pm.response.json();\r",
 									"pm.environment.set(\"Authtoken\", jsonData.token);\r",
 									"}\r",
 									"\r",
 									"// Valid Schema\r",
-									"var schema = {\r",
+									"var validschema = {\r",
 									"  \"type\": \"object\",\r",
 									"  \"properties\": {\r",
 									"    \"token\": {\r",
@@ -83,14 +83,18 @@
 									"    \"success\"\r",
 									"  ]\r",
 									"}\r",
+									"const scenario = pm.variables.get(\"scenario\");\r",
 									"\r",
 									"// Schema validation for valid & invalid scenario\r",
-									"pm.test(\"Schema Validation AJV\", () =>{\r",
-									"if(pm.variables.get(\"statusCode\")===200)\r",
-									"pm.response.to.have.jsonSchema(schema);\r",
-									"else if(pm.variables.get(\"statusCode\")===400)\r",
-									"pm.response.to.have.jsonSchema(Invalidschema);\r",
-									"})\r",
+									"if(pm.variables.get(\"statusCode\")===200){\r",
+									"    pm.test(`[${scenario}] - Validating Schema AJV`, () =>{\r",
+									"    pm.response.to.have.jsonSchema(validschema);\r",
+									"})}\r",
+									"else if(pm.variables.get(\"statusCode\")===400){\r",
+									"    pm.test(`[${scenario}] - Validating Schema AJV`, () =>{\r",
+									"    pm.response.to.have.jsonSchema(Invalidschema);\r",
+									"})}\r",
+									" \r",
 									""
 								],
 								"type": "text/javascript",
@@ -608,13 +612,85 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "20b6e3de-d337-4a51-b3d1-02aeb24cf9d0",
+								"id": "ffebf4e7-a373-4aad-8190-ef9a36c1809c",
 								"exec": [
-									"if(pm.variables.get(\"statusCode\")===201){\r",
-									"var jsonData = pm.response.json();\r",
 									"\r",
-									"pm.environment.set(\"batchId\", jsonData.batchId);\r",
-									"}"
+									"if(pm.variables.get(\"statusCode\")===201 && pm.variables.get(\"scenario\")===\"ValidAddBatch\")\r",
+									"{\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.collectionVariables.set(\"batchId\", jsonData.batchId);\r",
+									"    pm.collectionVariables.set(\"batchName\", jsonData.batchName);\r",
+									"}\r",
+									"\r",
+									"var schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"batchId\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"batchName\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"batchDescription\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"batchStatus\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"batchNoOfClasses\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"programId\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"programName\": {\r",
+									"      \"type\": \"string\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"batchId\",\r",
+									"    \"batchName\",\r",
+									"    \"batchDescription\",\r",
+									"    \"batchStatus\",\r",
+									"    \"batchNoOfClasses\",\r",
+									"    \"programId\",\r",
+									"    \"programName\"\r",
+									"  ]\r",
+									"}\r",
+									"var Invalidschema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"message\",\r",
+									"    \"success\"\r",
+									"  ]\r",
+									"}\r",
+									"const scenario = pm.variables.get(\"scenario\");\r",
+									"\r",
+									"// Schema validation for valid & invalid scenario\r",
+									"if(pm.variables.get(\"statusCode\")===201){\r",
+									"    pm.test(`[${scenario}] - Validating Schema AJV`, () =>{\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"})}\r",
+									"else if(pm.variables.get(\"statusCode\")===400){\r",
+									"    pm.test(`[${scenario}] - Validating Schema AJV`, () =>{\r",
+									"        pm.response.to.have.jsonSchema(Invalidschema);\r",
+									"})\r",
+									"}\r",
+									"\r",
+									"if(pm.variables.get(\"statusCode\")===201 && pm.variables.get(\"scenario\")===\"AddBatchInactive\"){\r",
+									"    pm.collectionVariables.set(\"BatchInactiveID\", pm.response.json().batchId);\r",
+									"}\r",
+									"\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -640,6 +716,228 @@
 						"url": "{{BaseURI}}{{endpoint}}"
 					},
 					"response": []
+				},
+				{
+					"name": "SearchBatch",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "899c3207-5dfb-458b-b496-fb050fd57bde",
+								"exec": [
+									"\r",
+									"var schemaId = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"batchId\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"batchName\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"batchDescription\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"batchStatus\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"batchNoOfClasses\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"programId\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"programName\": {\r",
+									"      \"type\": \"string\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"batchId\",\r",
+									"    \"batchName\",\r",
+									"    \"batchDescription\",\r",
+									"    \"batchStatus\",\r",
+									"    \"batchNoOfClasses\",\r",
+									"    \"programId\",\r",
+									"    \"programName\"\r",
+									"  ]\r",
+									"}\r",
+									"var schemaName = {\r",
+									"  \"type\": \"array\",\r",
+									"  \"items\": [\r",
+									"    {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"batchId\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"batchName\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"batchDescription\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"batchStatus\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"batchNoOfClasses\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"programId\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"programName\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"batchId\",\r",
+									"        \"batchName\",\r",
+									"        \"batchDescription\",\r",
+									"        \"batchStatus\",\r",
+									"        \"batchNoOfClasses\",\r",
+									"        \"programId\",\r",
+									"        \"programName\"\r",
+									"      ]\r",
+									"    }\r",
+									"  ]\r",
+									"}\r",
+									"const scenario = pm.variables.get(\"scenario\");\r",
+									"\r",
+									"// Schema validation for valid search by ID & Name\r",
+									"if(pm.variables.get(\"scenario\")===\"SearchByID-Valid\"){\r",
+									"pm.test(`[${scenario}] - Validating Schema AJV`, () =>{\r",
+									"pm.response.to.have.jsonSchema(schemaId);\r",
+									"})}\r",
+									"else if(pm.variables.get(\"scenario\")===\"SearchByName-Valid\"){\r",
+									"pm.test(`[${scenario}] - Validating Schema AJV`, () =>{\r",
+									"pm.response.to.have.jsonSchema(schemaName);\r",
+									"})}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "d34925ee-9dbd-480b-9b7f-4f235a8efffb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "EditBatch",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "818b40b3-0e41-4d6a-b3f7-9e786817760e",
+								"exec": [
+									"var schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"batchId\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"batchName\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"batchDescription\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"batchStatus\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"batchNoOfClasses\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"programId\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"programName\": {\r",
+									"      \"type\": \"string\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"batchId\",\r",
+									"    \"batchName\",\r",
+									"    \"batchDescription\",\r",
+									"    \"batchStatus\",\r",
+									"    \"batchNoOfClasses\",\r",
+									"    \"programId\",\r",
+									"    \"programName\"\r",
+									"  ]\r",
+									"}\r",
+									"var Invalidschema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"message\",\r",
+									"    \"success\"\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"const scenario = pm.variables.get(\"scenario\");\r",
+									"\r",
+									"// Schema validation for valid & invalid scenario\r",
+									"if(pm.variables.get(\"statusCode\")===200){\r",
+									"    pm.test(`[${scenario}] - Validating Schema AJV`, () =>{\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"})}\r",
+									"else if(pm.variables.get(\"statusCode\")===400){\r",
+									"    pm.test(`[${scenario}] - Validating Schema AJV`, () =>{\r",
+									"        pm.response.to.have.jsonSchema(Invalidschema);\r",
+									"})\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "32ee07b6-4169-4f6e-bb33-bc6f8a21a339",
+								"exec": [
+									"var temp = "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "02f39537-e410-4086-a043-b8df7bf20357",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"batchDescription\": \"{{batchDescription}}\",\r\n\"batchId\": \"{{batchId}}\",\r\n\"batchName\": \"{{batchName}}\",\r\n\"batchNoOfClasses\": \"{{batchNoOfClasses}}\",\r\n\"batchStatus\": \"{{batchStatus}}\",\r\n\"programId\": \"{{programId}}\",\r\n\"programName\": \"{{programName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
 				}
 			],
 			"id": "ed4b8a34-4aca-4da3-9d27-532ee29de2f3"
@@ -656,12 +954,40 @@
 		},
 		{
 			"name": "Delete and Data Cleanup",
-			"item": [],
+			"item": [
+				{
+					"name": "Delete",
+					"id": "acd9ed6c-9226-4af9-8849-e34d6c08a922",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				}
+			],
 			"id": "535fbe46-c988-42dd-aaeb-7099cbbe7540"
 		},
 		{
 			"name": "Logout",
-			"item": [],
+			"item": [
+				{
+					"name": "Logout",
+					"id": "61a1f08f-9679-453c-9cad-65e486294c61",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				}
+			],
 			"id": "779574b2-ac1a-4834-aa53-1569e5260f77"
 		}
 	],
@@ -669,7 +995,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "6c9b6848-3013-47bd-a942-f48cf0e50f2b",
+				"id": "3ff1c6c9-5426-4000-b7d9-dfa00b11910d",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -746,14 +1072,16 @@
 					"//-------------- Set the Request Method Dynamically---------------\r",
 					" if (variables.method) {\r",
 					"    pm.request.method = variables.method;\r",
-					" }"
+					" }\r",
+					"\r",
+					""
 				]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
-				"id": "8ac8bfcf-04ad-4169-8ae2-e87280342d04",
+				"id": "dd900f0e-d20e-4494-b1c8-f53246333e46",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -801,25 +1129,36 @@
 					"    catch (e) {\r",
 					"       console.log(\"Failed to parse JSON response:\", e);\r",
 					"        // If the response is not valid JSON, only validate status code and status text\r",
-					"        pm.test(`[${scenarioName}] - Validating Status Code`, ()=> {\r",
+					"        pm.test(\"Validating Status Code - \" , () => {\r",
 					"            pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
 					"        });\r",
-					"        // Test to validate the status line (status text) of the response\r",
-					"        pm.test(`[${scenarioName}] - Validating Status Line`, function () {\r",
-					"            pm.expect(pm.response.status).to.eql(pm.variables.get('statusText'));\r",
+					"        pm.test(\"Response status text check - \" , function () {\r",
+					"            pm.expect(pm.response.status).to.eql(pm.variables.get('statusText'));\r",
 					"        });\r",
 					"    }\r",
 					"  } \r",
 					"  else {\r",
 					" console.log(\"Empty response received.\");\r",
 					"    // If the response is empty, log the issue and still validate the status code\r",
-					"\r",
-					"    pm.test(`[${scenarioName}] - Validating Status Code`, ()=> {\r",
+					"    pm.test(\"Validating Status Code - \"  , () => {\r",
 					"        pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
 					"    });\r",
-					"  }"
+					"  }\r",
+					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d8c15715-8ded-46f9-a9de-2b6eeec559e4",
+			"key": "batchId",
+			"value": ""
+		},
+		{
+			"id": "39aa2817-915c-4a10-9005-41934031ec65",
+			"key": "batchName",
+			"value": ""
 		}
 	]
 }

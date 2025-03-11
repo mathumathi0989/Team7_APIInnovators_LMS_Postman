@@ -139,7 +139,7 @@
 									"\r",
 									"let scenario = pm.variables.get(\"scenario\");\r",
 									"\r",
-									"if ( scenario == 'Program with valid fields'){\r",
+									"if ( scenario == 'Program with all fields - valid fields'){\r",
 									"\r",
 									"    //We need to generate unique program name\r",
 									"    let nameSuffix = pm.variables.replaceIn('{{$randomWord}}');\r",
@@ -186,8 +186,10 @@
 									"    \r",
 									"    //program is created, save it for following requests - chaining\r",
 									"    let respBody = pm.response.json();\r",
-									"    pm.environment.set(\"programId\", respBody.programId);\r",
-									"    pm.environment.set(\"programName\", respBody.programName);\r",
+									"    pm.collectionVariables.set(\"programId\", respBody.programId);\r",
+									"    pm.collectionVariables.set(\"programName\", respBody.programName);\r",
+									"    //pm.environment.set(\"programId\", respBody.programId);\r",
+									"    //pm.environment.set(\"programName\", respBody.programName);\r",
 									"\r",
 									"    console.log(\"Program ID: \"+respBody.programId);\r",
 									"    console.log(\"Program Name: \"+respBody.programName);\r",
@@ -274,8 +276,10 @@
 									"\r",
 									"    //program is created, save it for following requests - chaining\r",
 									"    let respBody = pm.response.json();\r",
-									"    pm.environment.set(\"programId2\", respBody.programId);\r",
-									"    pm.environment.set(\"programName2\", respBody.programName);\r",
+									"    pm.collectionVariables.set(\"programId2\", respBody.programId);\r",
+									"    pm.collectionVariables.set(\"programName2\", respBody.programName);\r",
+									"   //  pm.environment.set(\"programId2\", respBody.programId);\r",
+									"    //pm.environment.set(\"programName2\", respBody.programName);\r",
 									"\r",
 									"    console.log(\"Program ID 2: \"+respBody.programId);\r",
 									"    console.log(\"Program Name 2: \"+respBody.programName);\r",
@@ -1151,13 +1155,33 @@
 	],
 	"variable": [
 		{
-			"id": "d8c15715-8ded-46f9-a9de-2b6eeec559e4",
-			"key": "batchId",
+			"id": "d1824ed5-7b91-4da0-9862-51ad2c40f6b6",
+			"key": "base-url",
+			"value": "https://lms-hackthon-feb25-803334c87fbe.herokuapp.com/lms"
+		},
+		{
+			"id": "15baaba6-ebe4-499b-b135-a18df672b8aa",
+			"key": "token",
 			"value": ""
 		},
 		{
-			"id": "39aa2817-915c-4a10-9005-41934031ec65",
-			"key": "batchName",
+			"id": "54295a8c-ea72-4a12-a432-bffc2f188413",
+			"key": "programId2",
+			"value": ""
+		},
+		{
+			"id": "018227b1-2ba1-4c8f-b932-64d2a502c091",
+			"key": "programName2",
+			"value": ""
+		},
+		{
+			"id": "a2750de0-2f30-42e8-b3d8-9aa5d900b063",
+			"key": "programId",
+			"value": ""
+		},
+		{
+			"id": "34dba8a3-5f7d-4fca-9e29-8e6ae988bcfb",
+			"key": "programName",
 			"value": ""
 		}
 	]

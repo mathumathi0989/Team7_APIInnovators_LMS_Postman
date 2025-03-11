@@ -565,6 +565,9 @@
 									"     console.log(\"Generated Batch name:\", Name);\r",
 									" }\r",
 									"\r",
+									" if(pm.variables.get(\"programId\")=== \"{{programId}}\"){\r",
+									"pm.variables.set(\"programId\", pm.collectionVariables.get(\"programId\"));\r",
+									"}\r",
 									"\r",
 									""
 								],
@@ -606,6 +609,9 @@
 									"}\r",
 									"if(pm.variables.get(\"batchName\") === \"{{batchName}}\"){\r",
 									"pm.variables.set(\"batchName\", pm.collectionVariables.get(\"batchName\"));\r",
+									"}\r",
+									" if(pm.variables.get(\"programId\")=== \"{{programId}}\"){\r",
+									"pm.variables.set(\"programId\", pm.collectionVariables.get(\"programId\"));\r",
 									"}"
 								],
 								"type": "text/javascript",
@@ -743,6 +749,12 @@
 									"}\r",
 									"if(pm.variables.get(\"batchName\")=== \"{{batchName}}\"){\r",
 									"pm.variables.set(\"batchName\", pm.collectionVariables.get(\"batchName\"));\r",
+									"}\r",
+									" if(pm.variables.get(\"programId\")=== \"{{programId}}\"){\r",
+									"pm.variables.set(\"programId\", pm.collectionVariables.get(\"programId\"));\r",
+									"}\r",
+									" if(pm.variables.get(\"programName\")=== \"{{programName}}\"){\r",
+									"pm.variables.set(\"programName\", pm.collectionVariables.get(\"programName\"));\r",
 									"}"
 								],
 								"type": "text/javascript",
@@ -1060,33 +1072,43 @@
 	],
 	"variable": [
 		{
-			"id": "d1824ed5-7b91-4da0-9862-51ad2c40f6b6",
+			"id": "71d42f36-b0fa-47cd-9b75-75d1523b04fc",
 			"key": "base-url",
 			"value": "https://lms-hackthon-feb25-803334c87fbe.herokuapp.com/lms"
 		},
 		{
-			"id": "15baaba6-ebe4-499b-b135-a18df672b8aa",
+			"id": "b46cbc93-4fad-4349-af31-57e8b11d5765",
 			"key": "token",
 			"value": ""
 		},
 		{
-			"id": "54295a8c-ea72-4a12-a432-bffc2f188413",
+			"id": "6d35da69-c00a-4731-b884-e415a76157da",
 			"key": "programId2",
 			"value": ""
 		},
 		{
-			"id": "018227b1-2ba1-4c8f-b932-64d2a502c091",
+			"id": "d0b32018-3c9c-4bb7-a099-288fb8431a50",
 			"key": "programName2",
 			"value": ""
 		},
 		{
-			"id": "a2750de0-2f30-42e8-b3d8-9aa5d900b063",
+			"id": "bdf28df8-585a-4b98-9c5c-fd7019de66c1",
 			"key": "programId",
 			"value": ""
 		},
 		{
-			"id": "34dba8a3-5f7d-4fca-9e29-8e6ae988bcfb",
+			"id": "2f4566b9-0308-4e43-b384-715333a6be31",
 			"key": "programName",
+			"value": ""
+		},
+		{
+			"id": "746cf2a9-a787-41a8-8271-a198d32a0257",
+			"key": "batchId",
+			"value": ""
+		},
+		{
+			"id": "ce9136cb-de7f-427e-b6c4-0fee9b695b9f",
+			"key": "batchName",
 			"value": ""
 		}
 	]

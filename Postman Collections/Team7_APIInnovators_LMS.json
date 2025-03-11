@@ -313,7 +313,36 @@
 					"response": []
 				},
 				{
-					"name": "Get all programs",
+					"name": "Get Programs",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "688453f7-10d0-43fc-b5af-2286c668cac8",
+								"exec": [
+									" if(pm.variables.get(\"programId\")=== \"{{programId}}\"){\r",
+									"pm.variables.set(\"programId\", pm.collectionVariables.get(\"programId\"));\r",
+									"}\r",
+									"if(pm.variables.get(\"programName\") === \"{{programName}}\"){\r",
+									"pm.variables.set(\"programName\", pm.collectionVariables.get(\"programName\"));\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "fed37dc0-a205-4cca-8a8c-e3a08f849304",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "5d95f0df-4aba-41fe-b29c-980c87d917c4",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -335,51 +364,7 @@
 					"response": []
 				},
 				{
-					"name": "Get All Programs with Users",
-					"id": "9355b15f-68fd-4f0c-b2f6-a5a48a843f6a",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base-url}}/{{endpoint}}"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Program by Program Id",
-					"id": "6bb0c623-c69e-42e0-9908-566b8ee01774",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base-url}}/{{endpoint}}"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Program by Program Id",
+					"name": "Update Program",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -394,6 +379,13 @@
 									"    //We need to generate unique program name\r",
 									"    let nameSuffix = pm.variables.replaceIn('{{$randomWord}}');\r",
 									"    pm.variables.set(\"programName\", \"postman-\"+nameSuffix);\r",
+									"}\r",
+									"\r",
+									" if(pm.variables.get(\"programId\")=== \"{{programId}}\"){\r",
+									"pm.variables.set(\"programId\", pm.collectionVariables.get(\"programId\"));\r",
+									"}\r",
+									"if(pm.variables.get(\"programName\") === \"{{programName}}\"){\r",
+									"pm.variables.set(\"programName\", pm.collectionVariables.get(\"programName\"));\r",
 									"}\r",
 									"\r",
 									"\r",
@@ -458,142 +450,6 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\r\n  \"programName\": \"{{programName}}\",\r\n  \"programDescription\": \"{{programDescription}}\",\r\n  \"programStatus\": \"{{programStatus}}\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base-url}}/{{endpoint}}"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Program by Program Name",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "688453f7-10d0-43fc-b5af-2286c668cac8",
-								"exec": [
-									"\r",
-									"let scenario = pm.variables.get(\"scenario\");\r",
-									"\r",
-									"if ( scenario == 'Program with valid fields'){\r",
-									"\r",
-									"    //We need to generate unique program name\r",
-									"    let nameSuffix = pm.variables.replaceIn('{{$randomWord}}');\r",
-									"    pm.variables.set(\"programName\", \"postman-\"+nameSuffix);\r",
-									"}\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "fed37dc0-a205-4cca-8a8c-e3a08f849304",
-								"exec": [
-									"\r",
-									"console.log (\"Validating Response, Iternation\", (pm.info.iteration)); \r",
-									"\r",
-									"if ( pm.response.code == 200 ){\r",
-									"\r",
-									"    //Now validating schema\r",
-									"    const schema = {\r",
-									"\r",
-									"                \"type\": \"object\",\r",
-									"                \"properties\": {\r",
-									"                    \"programId\": { \"type\": \"integer\"},\r",
-									"                    \"programName\": { \"type\": \"string\"},\r",
-									"                    \"programDescription\": { \"type\": \"string\"},\r",
-									"                    \"programStatus\": { \"type\": \"string\"},\r",
-									"                    \"creationTime\": { \"type\": \"string\"},\r",
-									"                    \"lastModTime\": { \"type\": \"string\"}\r",
-									"                },\r",
-									"                \"required\": [\"programId\", \"programName\", \"programDescription\", \"programStatus\", \"creationTime\", \"lastModTime\"]\r",
-									"        };\r",
-									"\r",
-									"    const scenario = pm.variables.get(\"scenario\");\r",
-									"    pm.test(`[${scenario}] - Validating Schema`, function () {\r",
-									"        \r",
-									"        pm.response.to.have.jsonSchema(schema);\r",
-									"    });\r",
-									"    \r",
-									"    //program is created, save it for following requests - chaining\r",
-									"    let respBody = pm.response.json();\r",
-									"    //pm.environment.set(\"programId\", respBody.programId);\r",
-									"    pm.environment.set(\"programName\", respBody.programName);\r",
-									"\r",
-									"    //console.log(\"Program ID: \"+respBody.programId);\r",
-									"    console.log(\"Program Name: \"+respBody.programName);\r",
-									"}\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"id": "fcc1354d-d5c2-4d17-adb6-f54503639ec2",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\r\n  \"programName\": \"{{programName}}\",\r\n  \"programDescription\": \"{{programDescription}}\",\r\n  \"programStatus\": \"{{programStatus}}\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base-url}}/{{endpoint}}"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Program By Program ID",
-					"id": "53394a81-5bcb-417f-ba93-4243fbdee624",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base-url}}/{{endpoint}}"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Program By Program Name",
-					"id": "8347e840-cc87-43b9-a1fd-ef0c075187ce",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"

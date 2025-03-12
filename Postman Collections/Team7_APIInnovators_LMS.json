@@ -1691,52 +1691,42 @@
 	],
 	"variable": [
 		{
-			"id": "9dd5a9f0-631d-4ee4-9b17-ec3432745fab",
 			"key": "base-url",
 			"value": "https://lms-hackthon-feb25-803334c87fbe.herokuapp.com/lms"
 		},
 		{
-			"id": "3af04658-4069-4951-9304-df4c06418e87",
 			"key": "token",
 			"value": ""
 		},
 		{
-			"id": "0c82fd6d-733e-434d-ac46-63533b613810",
 			"key": "programId2",
 			"value": ""
 		},
 		{
-			"id": "2d174484-75f3-40ac-bf25-351a9ae2b81b",
 			"key": "programName2",
 			"value": ""
 		},
 		{
-			"id": "3c116ed1-b995-4204-83bd-27fece093c25",
 			"key": "programId",
 			"value": ""
 		},
 		{
-			"id": "cc84a647-ab22-486d-92a0-32d76d2fc7f4",
 			"key": "programName",
 			"value": ""
 		},
 		{
-			"id": "c7a6efcf-9616-4922-b4b4-7511bdfedb4f",
 			"key": "batchId",
 			"value": ""
 		},
 		{
-			"id": "db949a7f-3e21-4ce2-9250-c97b428b787f",
 			"key": "batchName",
 			"value": ""
 		},
 		{
-			"id": "59a8b80a-a256-4bc0-a5f6-7e4a8a0a67e4",
 			"key": "classId",
 			"value": ""
 		},
 		{
-			"id": "d88fb27c-5fd5-459e-86cd-6a0fe3ae0a1d",
 			"key": "classTopic",
 			"value": ""
 		}

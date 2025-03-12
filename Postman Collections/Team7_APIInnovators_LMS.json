@@ -217,7 +217,7 @@
 								}
 							}
 						},
-						"url": "{{base-url}}/{{endpoint}}"
+						"url": "{{BaseURI}}{{endpoint}}"
 					},
 					"response": []
 				},
@@ -308,7 +308,7 @@
 								}
 							}
 						},
-						"url": "{{base-url}}/{{endpoint}}"
+						"url": "{{BaseURI}}{{endpoint}}"
 					},
 					"response": []
 				},
@@ -359,7 +359,7 @@
 								}
 							}
 						},
-						"url": "{{base-url}}/{{endpoint}}"
+						"url": "{{BaseURI}}{{endpoint}}"
 					},
 					"response": []
 				},
@@ -456,7 +456,7 @@
 								}
 							}
 						},
-						"url": "{{base-url}}/{{endpoint}}"
+						"url": "{{BaseURI}}{{endpoint}}"
 					},
 					"response": []
 				}

@@ -865,7 +865,447 @@
 		},
 		{
 			"name": "Class",
-			"item": [],
+			"item": [
+				{
+					"name": "Create Class",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa9e2c87-8e33-40de-8a2b-9b38a269eea1",
+								"exec": [
+									"if(pm.variables.get(\"statusCode\")===201 && pm.variables.get(\"scenario\")===\"ValidAll\"){",
+									"var jsonData = pm.response.json();",
+									"pm.collectionVariables.set(\"classId\", jsonData.csId);",
+									"pm.collectionVariables.set(\"classTopic\", jsonData.classTopic);",
+									"console.log(\"Storing class id \" , pm.collectionVariables.get(\"classId\"));",
+									"console.log(\"Storing class topic \", pm.collectionVariables.get(\"classTopic\"));",
+									"",
+									"const scenarioName = pm.variables.get(\"scenario\");",
+									"",
+									"//-----------SCHEMA VALIDATION----------------",
+									"var expectedSchema = pm.variables.get(\"expectedSchema\");",
+									"   pm.test(`[${scenarioName}] - Response body matches the expected schema`, function () {",
+									"        pm.response.to.have.jsonSchema(expectedSchema);",
+									"    });",
+									"",
+									"   //------------DATA TYPE VALIDATION----------------",
+									"   pm.test(`[${scenarioName}] - Data type validation`, function (){",
+									"       ",
+									"        // Validate batchId",
+									"        pm.expect(typeof jsonData.batchId).to.eql(\"number\", \"Expected 'batchId' to be a number\");",
+									"",
+									"        // Validate classId",
+									"        pm.expect(typeof jsonData.csId).to.eql(\"number\", \"Expected 'csId' to be a number\");",
+									"",
+									"        // Validate classComments",
+									"        pm.expect(typeof jsonData.classComments).to.eql(\"string\" || \"null\", \"Expected 'classComments' to be a string\");",
+									"    ",
+									"        // Validate classDate",
+									"        pm.expect(typeof jsonData.classDate).to.eql(\"string\", \"Expected 'classDate' to be a string\");",
+									"    ",
+									"        // Validate classDescription",
+									"        pm.expect(typeof jsonData.classDescription).to.eql(\"string\" || \"null\", \"Expected 'classDescription' to be a string\");",
+									"    ",
+									"        // Validate classNotes",
+									"        pm.expect(typeof jsonData.classNotes).to.eql(\"string\" || \"null\", \"Expected 'classNotes' to be a string\");",
+									"    ",
+									"        // Validate classRecordingPath ",
+									"        pm.expect(typeof jsonData.classRecordingPath).to.eql(\"string\" || \"null\", \"Expected 'classRecordingPath' to be a string\");",
+									"    ",
+									"        // Validate classStaffId ",
+									"        pm.expect(typeof jsonData.classStaffId).to.eql(\"string\", \"Expected 'classStaffId' to be a string\");",
+									"    ",
+									"        // Validate classTopic",
+									"        pm.expect(typeof jsonData.classTopic).to.eql(\"string\", \"Expected 'classTopic' to be a string\");",
+									"   ",
+									"        // Validate classStatus",
+									"        pm.expect(typeof jsonData.classStatus).to.eql(\"string\", \"Expected 'classStatus' to be a string\");",
+									"   ",
+									"        // Validate classScheduledDates",
+									"        pm.expect(typeof jsonData.classScheduledDates).to.eql(\"object\" || \"null\", \"Expected 'classScheduledDates' to be a object\");",
+									"        ",
+									"            });",
+									"",
+									"}",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c3b70eb6-e3e5-4c6b-8f3d-cd9abf4bc732",
+								"exec": [
+									"const scenarioName = pm.variables.get(\"scenario\");",
+									"console.log(\"Chaining batch variable\", pm.collectionVariables.get(\"batchId\"));",
+									"",
+									"",
+									"// Function to process and correctly set variables",
+									"const processVariable = (varName) => {",
+									"    let value = pm.variables.get(varName);",
+									"",
+									"    if (value === \"{{\" + varName + \"}}\") {",
+									"        return null; // Keep it as actual null if uninitialized",
+									"    }",
+									"    if (value === \"null\") {",
+									"        return null; // Convert string \"null\" to real null",
+									"    }",
+									"    if (value === \"true\") {",
+									"        return true; // Convert string \"true\" to boolean true",
+									"    }",
+									"    if (value === \"false\") {",
+									"        return false; // Convert string \"false\" to boolean false",
+									"    }",
+									"    if (value === true || value === false) {",
+									"        return value; // Return the actual boolean value",
+									"    }",
+									"    if (!isNaN(value) && value !== null && value !== \"\") {",
+									"        return Number(value); // Convert numeric strings to actual numbers",
+									"    }",
+									"    // If the value is a non-empty alphanumeric string, wrap it in double quotes only if it's not already wrapped",
+									"    if (typeof value === 'string' && value.trim() !== \"\" && !value.startsWith('\"') && !value.endsWith('\"')) {",
+									"        return `\"${value}\"`;  // Wrap non-empty strings in double quotes only if they're not already quoted",
+									"    }",
+									"",
+									"    return value;  // Return other values (null, numbers, booleans) as they are",
+									"};",
+									"",
+									"if(pm.variables.get(\"classTopic\") === \"{{classTopic}}\"){",
+									"    let Topic = \"APIInnovatorsClass\" + pm.variables.replaceIn('{{$randomFirstName}}');",
+									"     pm.variables.set(\"classTopic\", `\"${Topic}\"`);",
+									" }",
+									" else {",
+									"    pm.variables.set(\"classTopic\", processVariable(\"classTopic\"));",
+									"}",
+									"",
+									" pm.variables.set(\"classStaffId\", processVariable(\"classStaffId\"));",
+									" pm.variables.set(\"classStatus\", processVariable(\"classStatus\"));",
+									" pm.variables.set(\"classComments\", processVariable(\"classComments\"));",
+									" pm.variables.set(\"classNotes\", processVariable(\"classNotes\"));",
+									"  pm.variables.set(\"classDescription\", processVariable(\"classDescription\"));",
+									"",
+									"if(pm.variables.get(\"batchId\")=== \"{{batchId}}\"){",
+									"pm.variables.set(\"batchId\", pm.collectionVariables.get(\"batchId\"));",
+									" console.log(\"Batch id is \", pm.variables.get(\"batchId\"));",
+									"}",
+									"",
+									"pm.variables.set(\"classScheduledDates\", JSON.stringify(pm.variables.get(\"classScheduledDates\")));",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e5138fba-6f31-4e6f-8b6a-98c4abeab954",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"batchId\": {{batchId}},\n  \"classNo\": {{classNo}},\n   \"classDate\": \"{{classDate}}\",\n    \"classTopic\": {{classTopic}},\n    \"classStatus\":{{classStatus}},\n    \"classStaffId\": {{classStaffId}},\n    \"classDescription\": {{classDescription}},\n    \"classComments\": {{classComments}},\n    \"classNotes\": {{classNotes}},\n  \"classRecordingPath\": \"{{classRecordingPath}}\",\n\"classScheduledDates\":  {{classScheduledDates}}\n\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Class",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "affe4eb5-d22a-49eb-8dcc-863cd2987909",
+								"exec": [
+									"pm.variables.set(\"classId\", pm.collectionVariables.get(\"classId\"));",
+									"pm.variables.set(\"classTopic\", pm.collectionVariables.get(\"classTopic\"));",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "dd859ec4-6bbb-4064-a6cc-ab6988ed18ff",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Class",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa9e2c87-8e33-40de-8a2b-9b38a269eea1",
+								"exec": [
+									"if(pm.variables.get(\"statusCode\")===200){",
+									"   let jsonData = pm.response.json();",
+									"",
+									"",
+									" //-------------SCHEMA VALIDATION---------------",
+									" var expectedSchema = {",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"batchId\": {",
+									"      \"type\": \"integer\"",
+									"    },",
+									"    \"classComments\": {",
+									"      \"type\": [\"string\",\"null\"]",
+									"    },",
+									"    \"classDate\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"classDescription\": {",
+									"      \"type\": [\"string\",\"null\"]",
+									"    },",
+									"    \"classNo\": {",
+									"      \"type\": \"integer\"",
+									"    },",
+									"    \"classStatus\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"classNotes\": {",
+									"      \"type\": [\"string\",\"null\"]",
+									"    },",
+									"    \"classRecordingPath\": {",
+									"      \"type\": [\"string\",\"null\"]",
+									"    },",
+									"    \"classStaffId\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"classTopic\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"classScheduledDates\": {",
+									"      \"type\": [\"array\",\"null\"],",
+									"      \"items\": [",
+									"        {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        {",
+									"          \"type\": \"string\"",
+									"        }",
+									"      ]",
+									"    }",
+									"  },",
+									"  \"required\": [",
+									"    \"batchId\",",
+									"    \"classDate\",",
+									"    \"classNo\",",
+									"    \"classStatus\",",
+									"    \"classStaffId\",",
+									"    \"classTopic\"",
+									"  ]",
+									"}",
+									"",
+									"",
+									"if(pm.variables.get(\"_comment\")===\"valid all\")",
+									"{ ",
+									"   //-----------SCHEMA VALIDATION----------------",
+									"   pm.test(\"Verify JSON Schema\", function () {",
+									"        pm.response.to.have.jsonSchema(expectedSchema);",
+									"    });",
+									"",
+									"   //------------DATA TYPE VALIDATION----------------",
+									"   pm.test(\"Data Type Validation\",()=>{",
+									"       ",
+									"        // Validate batchId",
+									"        pm.expect(typeof jsonData.batchId).to.eql(\"number\", \"Expected 'batchId' to be a number\");",
+									"",
+									"        // Validate classId",
+									"        pm.expect(typeof jsonData.csId).to.eql(\"number\", \"Expected 'csId' to be a number\");",
+									"",
+									"        // Validate classComments",
+									"        pm.expect(typeof jsonData.classComments).to.eql(\"string\" || \"null\", \"Expected 'classComments' to be a string\");",
+									"    ",
+									"        // Validate classDate",
+									"        pm.expect(typeof jsonData.classDate).to.eql(\"string\", \"Expected 'classDate' to be a string\");",
+									"    ",
+									"        // Validate classDescription",
+									"        pm.expect(typeof jsonData.classDescription).to.eql(\"string\" || \"null\", \"Expected 'classDescription' to be a string\");",
+									"    ",
+									"        // Validate classNotes",
+									"        pm.expect(typeof jsonData.classNotes).to.eql(\"string\" || \"null\", \"Expected 'classNotes' to be a string\");",
+									"    ",
+									"        // Validate classRecordingPath ",
+									"        pm.expect(typeof jsonData.classRecordingPath).to.eql(\"string\" || \"null\", \"Expected 'classRecordingPath' to be a string\");",
+									"    ",
+									"        // Validate classStaffId ",
+									"        pm.expect(typeof jsonData.classStaffId).to.eql(\"string\", \"Expected 'classStaffId' to be a string\");",
+									"    ",
+									"        // Validate classTopic",
+									"        pm.expect(typeof jsonData.classTopic).to.eql(\"string\", \"Expected 'classTopic' to be a string\");",
+									"   ",
+									"        // Validate classStatus",
+									"        pm.expect(typeof jsonData.classStatus).to.eql(\"string\", \"Expected 'classStatus' to be a string\");",
+									"   ",
+									"        // Validate classScheduledDates",
+									"        pm.expect(typeof jsonData.classScheduledDates).to.eql(\"object\" || \"null\", \"Expected 'classScheduledDates' to be a object\");",
+									"        ",
+									"            });",
+									"",
+									" }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b078ae6b-8e96-4600-b1bb-1d18ee3a5fdc",
+								"exec": [
+									"pm.variables.set(\"classId\", pm.collectionVariables.get(\"classId\"));",
+									"pm.variables.set(\"classTopic\", pm.collectionVariables.get(\"classTopic\"));",
+									"",
+									"",
+									"if(pm.variables.get(\"classTopicUpdate\") === \"{{classTopicUpdate}}\"){",
+									"  ",
+									"    let TopicUpdate = \"APIInnovatorsClassUpdate\" + pm.variables.replaceIn('{{$randomFirstName}}');",
+									"     pm.variables.set(\"classTopicUpdate\", TopicUpdate);",
+									" }",
+									"",
+									"",
+									"pm.variables.set(\"batchId\", pm.collectionVariables.get(\"batchId\"));",
+									"pm.variables.set(\"classScheduledDates\", JSON.stringify(pm.variables.get(\"classScheduledDates\")));",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "93c712a6-dc1a-4a56-9c18-9993b7170973",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"batchId\": {{batchId}},\n  \"classNo\": {{classNo}},\n   \"classDate\": \"{{classDate}}\",\n    \"classTopic\": \"{{classTopicUpdate}}\",\n    \"classStatus\":\"{{classStatus}}\",\n    \"classStaffId\": \"{{classStaffId}}\",\n    \"classDescription\": \"{{classDescription}}\",\n    \"classComments\": \"{{classComments}}\",\n    \"classNotes\": \"{{classNotes}}\",\n  \"classRecordingPath\": \"{{classRecordingPath}}\",\n\"classScheduledDates\":  {{classScheduledDates}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Class Recording path",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa9e2c87-8e33-40de-8a2b-9b38a269eea1",
+								"exec": [
+									"if(pm.variables.get(\"statusCode\")===200){",
+									"   let jsonData = pm.response.json();",
+									"",
+									"//-------------SCHEMA VALIDATION---------------",
+									" var expectedSchema = {",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"classRecordingPath\": {",
+									"      \"type\": [\"string\",\"null\"]",
+									"    },",
+									"     \"csId\": {",
+									"      \"type\": [\"integer\",\"null\"]",
+									"    },",
+									"  },",
+									"  \"required\": [",
+									"  ]",
+									"}",
+									"",
+									" //-----------SCHEMA VALIDATION----------------",
+									"   pm.test(\"Verify JSON Schema\", function () {",
+									"        pm.response.to.have.jsonSchema(expectedSchema);",
+									"    });",
+									"",
+									"   //------------DATA TYPE VALIDATION----------------",
+									"   pm.test(\"Data Type Validation\",()=>{",
+									"        // Validate classRecordingPath",
+									"        pm.expect(typeof jsonData.classRecordingPath).to.eql(\"string\" || \"null\", \"Expected 'classRecordingPath' to be a string\");",
+									"    ",
+									"        // Validate classId",
+									"        pm.expect(typeof jsonData.csId).to.eql(\"number\" || \"null\", \"Expected 'csId' to be a number\");",
+									"            });",
+									"",
+									" }"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "52d2eb92-7aac-4ed1-8ed7-31046ee43246",
+								"exec": [
+									"pm.variables.set(\"classId\", pm.collectionVariables.get(\"classId\"));",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "46ad580f-5afb-4c96-b1bb-9362c63522bd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"classRecordingPath\": \"{{classRecordingPath}}\",\n\"csId\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				}
+			],
 			"id": "5927191d-57bf-4491-8423-99aab342fd39"
 		},
 		{
@@ -878,6 +1318,24 @@
 			"item": [
 				{
 					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "efe5520e-fca2-41a9-bbac-79f43a0bf79a",
+								"exec": [
+									"// pm.variables.set(\"classId\", pm.collectionVariables.get(\"classId\"));",
+									"// pm.variables.set(\"classTopic\", pm.collectionVariables.get(\"classTopic\"));",
+									"",
+									"// pm.collectionVariables.unset(\"classId\");",
+									"// pm.collectionVariables.unset(\"classTopic\");",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "acd9ed6c-9226-4af9-8849-e34d6c08a922",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -916,7 +1374,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "3ff1c6c9-5426-4000-b7d9-dfa00b11910d",
+				"id": "26a062ee-364a-4c53-ba6a-46d7058b4c59",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1002,7 +1460,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "dd900f0e-d20e-4494-b1c8-f53246333e46",
+				"id": "46c182b7-039a-4091-93ff-52bee0e44ba0",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1048,20 +1506,21 @@
 					"        eval(pm.environment.get(\"commonTests\"))();\r",
 					"    } \r",
 					"    catch (e) {\r",
-					"       console.log(\"Failed to parse JSON response:\", e);\r",
-					"        // If the response is not valid JSON, only validate status code and status text\r",
-					"        pm.test(\"Validating Status Code - \" , () => {\r",
-					"            pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
-					"        });\r",
-					"        pm.test(\"Response status text check - \" , function () {\r",
-					"            pm.expect(pm.response.status).to.eql(pm.variables.get('statusText'));\r",
-					"        });\r",
+					"      console.log(\"Failed to parse JSON response:\", e);\r",
+					"    \r",
+					"    pm.test(`[${scenarioName}] - Validating Status Code`, () => {\r",
+					"        pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
+					"    });\r",
+					"\r",
+					"    pm.test(`[${scenarioName}] - Response status text check`, function () {\r",
+					"        pm.expect(pm.response.status).to.eql(pm.variables.get('statusText'));\r",
+					"    });\r",
 					"    }\r",
 					"  } \r",
 					"  else {\r",
 					" console.log(\"Empty response received.\");\r",
-					"    // If the response is empty, log the issue and still validate the status code\r",
-					"    pm.test(\"Validating Status Code - \"  , () => {\r",
+					"    \r",
+					"    pm.test(`[${scenarioName}] - Validating Status Code`, () => {\r",
 					"        pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
 					"    });\r",
 					"  }\r",
@@ -1072,43 +1531,53 @@
 	],
 	"variable": [
 		{
-			"id": "71d42f36-b0fa-47cd-9b75-75d1523b04fc",
+			"id": "9dd5a9f0-631d-4ee4-9b17-ec3432745fab",
 			"key": "base-url",
 			"value": "https://lms-hackthon-feb25-803334c87fbe.herokuapp.com/lms"
 		},
 		{
-			"id": "b46cbc93-4fad-4349-af31-57e8b11d5765",
+			"id": "3af04658-4069-4951-9304-df4c06418e87",
 			"key": "token",
 			"value": ""
 		},
 		{
-			"id": "6d35da69-c00a-4731-b884-e415a76157da",
+			"id": "0c82fd6d-733e-434d-ac46-63533b613810",
 			"key": "programId2",
 			"value": ""
 		},
 		{
-			"id": "d0b32018-3c9c-4bb7-a099-288fb8431a50",
+			"id": "2d174484-75f3-40ac-bf25-351a9ae2b81b",
 			"key": "programName2",
 			"value": ""
 		},
 		{
-			"id": "bdf28df8-585a-4b98-9c5c-fd7019de66c1",
+			"id": "3c116ed1-b995-4204-83bd-27fece093c25",
 			"key": "programId",
 			"value": ""
 		},
 		{
-			"id": "2f4566b9-0308-4e43-b384-715333a6be31",
+			"id": "cc84a647-ab22-486d-92a0-32d76d2fc7f4",
 			"key": "programName",
 			"value": ""
 		},
 		{
-			"id": "746cf2a9-a787-41a8-8271-a198d32a0257",
+			"id": "c7a6efcf-9616-4922-b4b4-7511bdfedb4f",
 			"key": "batchId",
 			"value": ""
 		},
 		{
-			"id": "ce9136cb-de7f-427e-b6c4-0fee9b695b9f",
+			"id": "db949a7f-3e21-4ce2-9250-c97b428b787f",
 			"key": "batchName",
+			"value": ""
+		},
+		{
+			"id": "59a8b80a-a256-4bc0-a5f6-7e4a8a0a67e4",
+			"key": "classId",
+			"value": ""
+		},
+		{
+			"id": "d88fb27c-5fd5-459e-86cd-6a0fe3ae0a1d",
+			"key": "classTopic",
 			"value": ""
 		}
 	]

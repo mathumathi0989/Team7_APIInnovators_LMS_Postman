@@ -1925,62 +1925,50 @@
 	],
 	"variable": [
 		{
-			"id": "aee09507-c0c6-44cb-b179-d793e7c9e384",
 			"key": "programId2",
 			"value": ""
 		},
 		{
-			"id": "85bec231-71c1-4489-9824-851b09dd9922",
 			"key": "programName2",
 			"value": ""
 		},
 		{
-			"id": "160fa673-5e19-4d91-8365-b419989a8f4c",
 			"key": "programId",
 			"value": ""
 		},
 		{
-			"id": "e0b82489-6378-421e-bb95-761d9a04ddfa",
 			"key": "programName",
 			"value": ""
 		},
 		{
-			"id": "892e3d69-d1ed-45cf-9356-cd920857f41d",
 			"key": "batchId",
 			"value": ""
 		},
 		{
-			"id": "e20deb7c-fe4e-4786-875c-bfcba115aa1f",
 			"key": "batchName",
 			"value": ""
 		},
 		{
-			"id": "c2012ff0-8dce-4fb0-846e-2ca19da363de",
 			"key": "classId",
 			"value": ""
 		},
 		{
-			"id": "b87d8e07-2535-4177-b12a-c3bbd831838a",
 			"key": "classTopic",
 			"value": ""
 		},
 		{
-			"id": "bcd8aded-90f0-4a87-b4bd-7ed289cbd5a0",
 			"key": "adminId",
 			"value": ""
 		},
 		{
-			"id": "c52b52bc-d088-48de-bcb8-8a863391b09e",
 			"key": "staffId",
 			"value": ""
 		},
 		{
-			"id": "0f001ba2-2a28-423a-9112-efda0085d091",
 			"key": "studentId",
 			"value": ""
 		},
 		{
-			"id": "3cf7c496-aefd-4173-a727-ca5efc3988e4",
 			"key": "StudentRoleId",
 			"value": ""
 		}

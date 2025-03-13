@@ -1002,6 +1002,107 @@
 						"url": "{{BaseURI}}{{endpoint}}"
 					},
 					"response": []
+				},
+				{
+					"name": "Update_User",
+					"id": "d5738def-1cab-40fc-bc70-014025bf2dc7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userComments\": \"{{userComments}}\",\r\n\"userEduPg\": \"{{userEduPg}}\",\r\n\"userEduUg\": \"{{userEduUg}}\",\r\n\"userFirstName\": \"{{userFirstName}}\",\r\n\"userLastName\": \"{{userLastName}}\",\r\n\"userMiddleName\": \"{{userMiddleName}}\",\r\n\"userLinkedinUrl\": \"{{userLinkedinUrl}}\",\r\n\"userLocation\": \"{{userLocation}}\",\r\n\"userLoginEmail\": \"{{userLoginEmail}}\",\r\n\"userPhoneNumber\": \"{{userPhoneNumber}}\",\r\n\"userTimeZone\":  \"{{userTimeZone}}\",\r\n\"userVisaStatus\": \"{{userVisaStatus}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update_User_RoleID",
+					"id": "6a0a0ba0-bc35-4e61-974a-af8578dc6585",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\"userRoleList\": [\r\n            {\r\n                \"roleId\": \"{{roleId}}\",\r\n                \"userRoleStatus\": \"{{userRoleStatus}}\"\r\n            }\r\n        ]\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Assign_Update_User_Role_Program_Batch_Status",
+					"id": "31a21f5f-e458-40c8-b457-718cc3533db3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"programId\": \"{{programId}}\",\r\n\"roleId\": \"{{roleId}}\",\r\n\"userId\": \"{{userId}}\",\r\n\"userRoleProgramBatches\": [\r\n{\r\n\"batchId\": \"{{batchId}}\",\r\n\"userRoleProgramBatchStatus\":\r\n\"{{userRoleProgramBatchStatus}}\"\r\n}\r\n]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update_User_Login_Status",
+					"id": "2adc9d41-0be8-4ccd-abe3-4199914f0f28",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"loginStatus\": \"{{loginStatus}}\",\r\n\"roleIds\": [\r\n[\"{{roleIds}}\"]\r\n],\r\n\"status\": \"{{status}}\",\r\n\"userLoginEmail\": \"{{userLoginEmail}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get_User_2",
+					"id": "48510bd7-db87-44cf-ae02-7d45b1dec6c3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseURI}}{{endpoint}}"
+					},
+					"response": []
 				}
 			],
 			"id": "6c3524fd-312f-4dc6-bc35-746c3b5c9fef"

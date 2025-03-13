@@ -1752,8 +1752,6 @@
 							"script": {
 								"id": "efe5520e-fca2-41a9-bbac-79f43a0bf79a",
 								"exec": [
-									"pm.collectionVariables.unset(\"classId\");",
-									"pm.collectionVariables.unset(\"classTopic\");",
 									""
 								],
 								"type": "text/javascript",

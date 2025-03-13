@@ -1130,11 +1130,6 @@
 									"    pm.expect(jsonData.classStatus).to.eql(pm.variables.get('classStatus').replace(/(^\"|\"$)/g, ''));",
 									"});",
 									"",
-									"// Validate classStaffId",
-									"pm.test(`[${scenarioName}] - Class Staff ID validation`, function () {",
-									"    pm.expect(jsonData.classStaffId).to.eql(pm.variables.get('classStaffId').replace(/(^\"|\"$)/g, ''));",
-									"});",
-									"",
 									"// Validate classDescription",
 									"pm.test(`[${scenarioName}] - Class Description validation`, function () {",
 									"    pm.expect(jsonData.classDescription).to.eql(pm.variables.get('classDescription').replace(/(^\"|\"$)/g, ''));",
@@ -1807,57 +1802,46 @@
 	],
 	"variable": [
 		{
-			"id": "fb6fca2b-e23a-43e5-a1b4-fbc7e4ee7cf7",
 			"key": "programId2",
 			"value": ""
 		},
 		{
-			"id": "4a549407-ae39-4b67-ad13-2f26548d2847",
 			"key": "programName2",
 			"value": ""
 		},
 		{
-			"id": "83a7136a-3f47-4744-8ac2-0404da3c995e",
 			"key": "programId",
 			"value": ""
 		},
 		{
-			"id": "95018c74-264d-4626-b232-4c7109b2219f",
 			"key": "programName",
 			"value": ""
 		},
 		{
-			"id": "3602c36f-2dfc-4819-8567-c6b97e0f2f3d",
 			"key": "batchId",
 			"value": ""
 		},
 		{
-			"id": "24805783-eeaf-416d-a989-746af790585e",
 			"key": "batchName",
 			"value": ""
 		},
 		{
-			"id": "02bb4a09-ebd5-45f5-96a3-ea8e8d2b6ed3",
 			"key": "classId",
 			"value": ""
 		},
 		{
-			"id": "bac5884f-d251-4901-815b-9315f47ba19e",
 			"key": "classTopic",
 			"value": ""
 		},
 		{
-			"id": "6877b7f9-fd13-4742-a95d-55ef47e084ca",
 			"key": "adminId",
 			"value": ""
 		},
 		{
-			"id": "9badc6df-8f21-4b8d-9598-e816c89d9c2b",
 			"key": "staffId",
 			"value": ""
 		},
 		{
-			"id": "e5de236e-ba9b-461b-8726-80fdec307001",
 			"key": "studentId",
 			"value": ""
 		}

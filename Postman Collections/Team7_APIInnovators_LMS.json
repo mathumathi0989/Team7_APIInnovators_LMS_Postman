@@ -1785,7 +1785,7 @@
 									"// Loop over the array and unset each variable",
 									"variablesToUnset.forEach(variable => {",
 									"    pm.collectionVariables.unset(variable);",
-									"    console.log(`Unset collection variable: ${variable}`);",
+									"   ",
 									"});",
 									""
 								],

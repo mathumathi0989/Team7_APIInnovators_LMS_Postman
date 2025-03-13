@@ -1956,39 +1956,5 @@
 				]
 			}
 		}
-	],
-	"variable": [
-		{
-			"key": "classId",
-			"value": ""
-		},
-		{
-			"key": "classTopic",
-			"value": ""
-		},
-		{
-			"key": "batchId",
-			"value": ""
-		},
-		{
-			"key": "batchName",
-			"value": ""
-		},
-		{
-			"key": "adminId",
-			"value": ""
-		},
-		{
-			"key": "staffId",
-			"value": ""
-		},
-		{
-			"key": "studentId",
-			"value": ""
-		},
-		{
-			"key": "StudentRoleId",
-			"value": ""
-		}
 	]
 }

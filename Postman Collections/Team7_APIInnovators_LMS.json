@@ -1027,6 +1027,21 @@
 				},
 				{
 					"name": "Update_User_RoleID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "dce0874a-8112-49fe-99bc-9b6488c46ba3",
+								"exec": [
+									" if(pm.variables.get(\"StudentRoleId\")=== \"{{StudentRoleId}}\"){",
+									"pm.variables.set(\"StudentRoleId\", pm.collectionVariables.get(\"StudentRoleId\"));",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "6a0a0ba0-bc35-4e61-974a-af8578dc6585",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1049,6 +1064,25 @@
 				},
 				{
 					"name": "Assign_Update_User_Role_Program_Batch_Status",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7b637e9d-95f5-455d-a2fd-02e85cc70489",
+								"exec": [
+									" if(pm.variables.get(\"batchId\")=== \"{{batchId}}\"){",
+									"pm.variables.set(\"batchId\", pm.collectionVariables.get(\"batchId\"));",
+									"}",
+									"",
+									"if(pm.variables.get(\"programId\")=== \"{{programId}}\"){",
+									"pm.variables.set(\"programId\", pm.collectionVariables.get(\"programId\"));",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "31a21f5f-e458-40c8-b457-718cc3533db3",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1093,6 +1127,21 @@
 				},
 				{
 					"name": "Get_User_2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d97dda56-6ff6-4813-a670-7e3c22bb4f8b",
+								"exec": [
+									" if(pm.variables.get(\"StudentRoleId\")=== \"{{StudentRoleId}}\"){",
+									"pm.variables.set(\"StudentRoleId\", pm.collectionVariables.get(\"StudentRoleId\"));",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "48510bd7-db87-44cf-ae02-7d45b1dec6c3",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
